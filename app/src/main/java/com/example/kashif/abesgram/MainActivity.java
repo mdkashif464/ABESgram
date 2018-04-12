@@ -2,6 +2,10 @@ package com.example.kashif.abesgram;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +18,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kashif.abesgram.Fragments.AccountFragment;
+import com.example.kashif.abesgram.Fragments.AddNewPostFragment;
+import com.example.kashif.abesgram.Fragments.HomeFragment;
 import com.example.kashif.abesgram.LoginActivities.LoginActivity;
 import com.example.kashif.abesgram.ProfileActivities.MyProfileActivity;
 import com.example.kashif.abesgram.UsersListActivities.AllUsersListActivity;
@@ -34,6 +41,11 @@ public class MainActivity extends AppCompatActivity
     private TextView nav_useremail_tv;
 
     private DrawerLayout drawer;
+    private BottomNavigationView mainbottomNav;
+
+    private HomeFragment homeFragment;
+    private AddNewPostFragment addNewPostFragment;
+    private AccountFragment accountFragment;
 
     private DatabaseReference databaseReference;
 
@@ -68,6 +80,15 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        mainbottomNav = (BottomNavigationView) findViewById(R.id.mainBottomNav);
+
+        // FRAGMENTS
+        homeFragment = new HomeFragment();
+        addNewPostFragment = new AddNewPostFragment();
+        accountFragment = new AccountFragment();
+
+        initializeFragment();
+
 
         // getting the uniqueUserId from login Activity
         Intent intent = getIntent();
@@ -77,6 +98,40 @@ public class MainActivity extends AppCompatActivity
         databaseReference = FirebaseDatabase.getInstance().getReference();
         // creating entry into database if logging for the first time
         createDatabaseEntryForNewUser(uniqueUserId);
+
+
+        mainbottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+
+                switch (item.getItemId()) {
+
+                    case R.id.bottom_action_home:
+
+                        replaceFragment(homeFragment, currentFragment);
+                        return true;
+
+                    case R.id.bottom_action_account:
+
+                        replaceFragment(accountFragment, currentFragment);
+                        return true;
+
+                    case R.id.bottom_action_add_new_post:
+
+                        replaceFragment(addNewPostFragment, currentFragment);
+                        return true;
+
+                    default:
+                        return false;
+
+
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -170,5 +225,50 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, ""+databaseError,Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initializeFragment(){
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.add(R.id.main_container, homeFragment);
+        fragmentTransaction.add(R.id.main_container, addNewPostFragment);
+        fragmentTransaction.add(R.id.main_container, accountFragment);
+
+        fragmentTransaction.hide(addNewPostFragment);
+        fragmentTransaction.hide(accountFragment);
+
+        fragmentTransaction.commit();
+
+    }
+
+    private void replaceFragment(Fragment fragment, Fragment currentFragment){
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if(fragment == homeFragment){
+
+            fragmentTransaction.hide(accountFragment);
+            fragmentTransaction.hide(addNewPostFragment);
+
+        }
+
+        if(fragment == accountFragment){
+
+            fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(addNewPostFragment);
+
+        }
+
+        if(fragment == addNewPostFragment){
+
+            fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(accountFragment);
+
+        }
+        fragmentTransaction.show(fragment);
+
+        //fragmentTransaction.replace(R.id.main_container, fragment);
+        fragmentTransaction.commit();
+
     }
 }

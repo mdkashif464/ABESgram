@@ -6,4 +6,15 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_logout">Log Out</string>
+
+    <string name="bottom_home_text">Home</string>
+    <string name="bottom_add_new_post_text">Add Post</string>
+    <string name="bottom_ac_text">Account</string>
+
+    <string name="post_desc_hint">Add Description ...</string>
+    <string name="new_post_btn_hint">Upload Post</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

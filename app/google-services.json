@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "123972227447-edfimbha633188er13hefhtmnq4280kk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kashif.abesgram",
+            "certificate_hash": "f1e20a803acf3a244f365c234973bace0fc7e997"
+          }
+        },
+        {
           "client_id": "123972227447-sgeareql3e86vmvmofboeiut3q3m4g2t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,6 +38,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyBREQuA3dqnWC24AH4wNeczgE0DDCefVSc"
+        },
+        {
+          "current_key": "AIzaSyDKdupfqtF_ODfHI1OJvrsypl3Pzaguilk"
         }
       ],
       "services": {
