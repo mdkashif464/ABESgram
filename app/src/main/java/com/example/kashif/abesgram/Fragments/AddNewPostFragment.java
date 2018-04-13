@@ -99,7 +99,7 @@ public class AddNewPostFragment extends Fragment {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setMinCropResultSize(512, 512)
-
+                        .setAspectRatio(1, 1)
                         .start(getContext(),AddNewPostFragment.this);
 
             }
