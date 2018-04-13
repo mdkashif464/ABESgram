@@ -23,12 +23,12 @@
                 android:background="#595757"
                 android:orientation="vertical">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_profile_image_imageview"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_add_a_photo"/>
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:src="@drawable/ic_add_a_photo"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"

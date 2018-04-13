@@ -3,9 +3,21 @@
 
     <group android:checkableBehavior="single">
 
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_add_new_post"
+            android:icon="@drawable/ic_add_a_photo"
+            android:title="Add Post" />
+
+
         <item
             android:id="@+id/nav_myprofile"
-            android:icon="@drawable/myprofile_icon"
+            android:icon="@drawable/ic_person_black_24dp"
             android:title="My Profile" />
 
         <item

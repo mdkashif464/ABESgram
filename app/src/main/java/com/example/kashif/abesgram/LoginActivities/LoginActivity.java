@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null){
-            gotoWelcomeActivity(currentUser.getUid(), currentUser.getEmail());
+            gotoWelcomeActivity();
         }
     }
 
@@ -113,8 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     logInProgressDialog.cancel();
                     Toast.makeText(LoginActivity.this, "Successfully SignedIn", Toast.LENGTH_LONG).show();
-                    currentUser = firebaseAuth.getCurrentUser();
-                    gotoWelcomeActivity(currentUser.getUid(), currentUser.getEmail());
+                    gotoWelcomeActivity();
                 }
                 else {
                     logInProgressDialog.cancel();
@@ -124,10 +123,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void gotoWelcomeActivity(String uniqueID, String userEmail){
+    public void gotoWelcomeActivity(){
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("uniqueUID", uniqueID)
-                .putExtra("userEmail", userEmail);
         startActivity(intent);
         finish();
     }

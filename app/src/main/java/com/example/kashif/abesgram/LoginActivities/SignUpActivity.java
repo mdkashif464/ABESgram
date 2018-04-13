@@ -17,14 +17,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private EditText signUp_name_editText;
     private EditText signUp_email_editText;
     private EditText signUp_password_editText;
 
     private Button signUp_button;
 
+    private String userName;
     private String userEmail;
     private String userPassword;
 
@@ -32,6 +40,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +52,14 @@ public class SignUpActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //initializing views
+        signUp_name_editText = (EditText) this.findViewById(R.id.et_signup_name);
         signUp_email_editText = (EditText) this.findViewById(R.id.et_signup_email);
         signUp_password_editText = (EditText) this.findViewById(R.id.et_signup_password);
         signUp_button = (Button) this.findViewById(R.id.btn_signup);
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
         signUp_button.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +72,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     // method to signUp user
     public void signUpUser(){
+
+        userName = signUp_name_editText.getText().toString().trim();
         userEmail = signUp_email_editText.getText().toString().trim();
         userPassword = signUp_password_editText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(userName)){
+            signUp_name_editText.setError("Name can not be blank");
+            return;
+        }
 
         if (TextUtils.isEmpty(userEmail)){
             signUp_email_editText.setError("Enter your email");
@@ -86,6 +105,24 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()){
+
+                    currentUser = firebaseAuth.getCurrentUser();
+                    final String currentUserId = currentUser.getUid();
+
+                    databaseReference.child("allUserDetails").child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            databaseReference.child("allUserDetails").child(currentUserId).child("UniqueUserId").setValue(currentUserId);
+                            databaseReference.child("allUserDetails").child(currentUserId).child("Name").setValue(userName);
+                            databaseReference.child("allUserDetails").child(currentUserId).child("Email").setValue(userEmail);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     signUpProgressDialog.cancel();
                     Toast.makeText(SignUpActivity.this, "Successfully Registered", Toast.LENGTH_LONG).show();
                     finish();

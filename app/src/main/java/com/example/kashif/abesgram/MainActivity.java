@@ -18,11 +18,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.kashif.abesgram.Fragments.AccountFragment;
 import com.example.kashif.abesgram.Fragments.AddNewPostFragment;
 import com.example.kashif.abesgram.Fragments.HomeFragment;
 import com.example.kashif.abesgram.LoginActivities.LoginActivity;
-import com.example.kashif.abesgram.ProfileActivities.MyProfileActivity;
 import com.example.kashif.abesgram.UsersListActivities.AllUsersListActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,12 +31,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private String uniqueUserId;
-    private String userEmail;
-
+    private CircleImageView nav_profile_image_iV;
     private TextView nav_username_tv;
     private TextView nav_useremail_tv;
 
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private HomeFragment homeFragment;
     private AddNewPostFragment addNewPostFragment;
     private AccountFragment accountFragment;
+    private Fragment currentFragment;
 
     private DatabaseReference databaseReference;
 
@@ -58,21 +59,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
 
+        nav_profile_image_iV = (CircleImageView) header.findViewById(R.id.nav_profile_image_imageView);
         nav_username_tv = (TextView) header.findViewById(R.id.nav_username_textview);
         nav_useremail_tv = (TextView) header.findViewById(R.id.nav_useremail_textView);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,36 +76,31 @@ public class MainActivity extends AppCompatActivity
 
         mainbottomNav = (BottomNavigationView) findViewById(R.id.mainBottomNav);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        // loading details into navigationView
+        loadDetailsForNavigationView(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         // FRAGMENTS
         homeFragment = new HomeFragment();
         addNewPostFragment = new AddNewPostFragment();
         accountFragment = new AccountFragment();
 
+        changeActionBarTitle("Home");
         initializeFragment();
-
-
-        // getting the uniqueUserId from login Activity
-        Intent intent = getIntent();
-        uniqueUserId = intent.getExtras().getString("uniqueUID");
-        userEmail = intent.getExtras().getString("userEmail");
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        // creating entry into database if logging for the first time
-        createDatabaseEntryForNewUser(uniqueUserId);
 
 
         mainbottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
 
                 switch (item.getItemId()) {
 
-                    case R.id.bottom_action_home:
-
+                    case R.id.bottom_action_home: {
                         replaceFragment(homeFragment, currentFragment);
                         return true;
+                    }
 
                     case R.id.bottom_action_account:
 
@@ -174,11 +163,21 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
 
+            case R.id.nav_home : {
+                replaceFragment(homeFragment, currentFragment);
+                mainbottomNav.setSelectedItemId(R.id.bottom_action_home);
+                break;
+            }
+
+            case R.id.nav_add_new_post : {
+                replaceFragment(addNewPostFragment, currentFragment);
+                mainbottomNav.setSelectedItemId(R.id.bottom_action_add_new_post);
+                break;
+            }
+
             case R.id.nav_myprofile : {
-                // Handle the profile action
-                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class)
-                        .putExtra("UserUniqueID", uniqueUserId);
-                startActivity(intent);
+                replaceFragment(accountFragment, currentFragment);
+                mainbottomNav.setSelectedItemId(R.id.bottom_action_account);
                 break;
             }
 
@@ -194,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 
     // logout method
@@ -205,19 +204,19 @@ public class MainActivity extends AppCompatActivity
         finish();
     }
 
-    // method to create database entry for new user
-    public void createDatabaseEntryForNewUser(final String uniqueUserId){
-        databaseReference.child("allUserDetails").child(uniqueUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+    // method to load NaviationView details
+    public void loadDetailsForNavigationView(String uniqueUserId){
+        databaseReference.child("allUserDetails").child(uniqueUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0){
-                    databaseReference.child("allUserDetails").child(uniqueUserId).child("UniqueUserId").setValue(uniqueUserId);
-                    databaseReference.child("allUserDetails").child(uniqueUserId).child("Email").setValue(userEmail);
-                }
-                else {
+
                     nav_username_tv.setText(dataSnapshot.child("Name").getValue(String.class));
                     nav_useremail_tv.setText(dataSnapshot.child("Email").getValue(String.class));
-                }
+                    String userImageUri = dataSnapshot.child("ProfileImage").getValue(String.class);
+                    if (userImageUri != null){
+                        Glide.with(MainActivity.this).load(userImageUri).into(nav_profile_image_iV);
+                    }
+
             }
 
             @Override
@@ -247,6 +246,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if(fragment == homeFragment){
 
+            changeActionBarTitle("Home");
             fragmentTransaction.hide(accountFragment);
             fragmentTransaction.hide(addNewPostFragment);
 
@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity
 
         if(fragment == accountFragment){
 
+            changeActionBarTitle("My Profile");
             fragmentTransaction.hide(homeFragment);
             fragmentTransaction.hide(addNewPostFragment);
 
@@ -261,6 +262,7 @@ public class MainActivity extends AppCompatActivity
 
         if(fragment == addNewPostFragment){
 
+            changeActionBarTitle("Add New Post");
             fragmentTransaction.hide(homeFragment);
             fragmentTransaction.hide(accountFragment);
 
@@ -270,5 +272,9 @@ public class MainActivity extends AppCompatActivity
         //fragmentTransaction.replace(R.id.main_container, fragment);
         fragmentTransaction.commit();
 
+    }
+
+    private void changeActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
     }
 }

@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.kashif.abesgram.MainActivity;
 import com.example.kashif.abesgram.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -101,7 +99,7 @@ public class AddNewPostFragment extends Fragment {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setMinCropResultSize(512, 512)
-                        .setAspectRatio(1, 1)
+
                         .start(getContext(),AddNewPostFragment.this);
 
             }
@@ -190,9 +188,8 @@ public class AddNewPostFragment extends Fragment {
                                                 if(task.isSuccessful()){
 
                                                     Toast.makeText(getActivity(), "Post was added", Toast.LENGTH_LONG).show();
-                                                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                                    fragmentTransaction.remove(AddNewPostFragment.this);
-                                                    fragmentTransaction.commit();
+                                                    newPostImage.setImageResource(R.drawable.post_placeholder);
+                                                    newPostDesc.setText("");
 
                                                 } else {
 
@@ -225,6 +222,9 @@ public class AddNewPostFragment extends Fragment {
                     });
 
 
+                }
+                else {
+                    Toast.makeText(getActivity(), "Any of the two field is Empty", Toast.LENGTH_LONG).show();
                 }
 
             }

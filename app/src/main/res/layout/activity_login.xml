@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f7bebe"
     tools:context="com.example.kashif.abesgram.LoginActivities.LoginActivity">
 
     <LinearLayout
@@ -19,7 +18,10 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Enter your email"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@drawable/input_edit_text_style"/>
 
 
         <EditText
@@ -28,7 +30,10 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="password"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@drawable/input_edit_text_style"/>
 
         <Button
             android:id="@+id/btn_signin"
@@ -36,7 +41,9 @@
             android:layout_height="wrap_content"
             android:text="SignIn"
             android:textAllCaps="false"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/button_stroke_background"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -59,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:text="SignUp"
                 android:textAllCaps="false"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:background="@drawable/button_stroke_background"/>
 
         </LinearLayout>
 

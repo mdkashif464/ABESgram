@@ -60,6 +60,7 @@ public class MyProfileActivity extends AppCompatActivity {
         // initializing views
         profile_edit_fab = (FloatingActionButton) findViewById(R.id.profile_edit_fab);
 
+        user_profile_image_iv = (ImageView) findViewById(R.id.user_profile_image_imagevieww);
         username_tv = (TextView) findViewById(R.id.user_profile_name_tv);
         useremail_tv = (TextView) findViewById(R.id.user_profile_email_tv);
         user_gender_age_tv = (TextView) findViewById(R.id.user_gender_age_tv);

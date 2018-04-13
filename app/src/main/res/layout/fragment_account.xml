@@ -5,9 +5,210 @@
     tools:context="com.example.kashif.abesgram.Fragments.AccountFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Account Fragment" />
+        android:background="#FF232222"
+        tools:context="com.example.kashif.abesgram.ProfileActivities.MyProfileActivity">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#595757"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/user_profile_image_imageview"
+                        android:layout_width="125dp"
+                        android:layout_height="125dp"
+                        android:src="@drawable/myprofile_icon"
+                        android:layout_gravity="center"/>
+
+                    <!--<ImageView
+                        android:id="@+id/user_profile_image_imageview"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/myprofile_icon"/>-->
+
+                    <TextView
+                        android:id="@+id/user_profile_name_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="User Name here"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/user_profile_email_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="User Email here"
+                        android:textColor="#FFE9DFDF"
+                        android:textSize="18sp"  />
+
+                    <TextView
+                        android:id="@+id/user_gender_age_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="User Gender | Age here"
+                        android:textColor="#FFE9DFDF"
+                        android:textSize="18sp"  />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Course"
+                            android:gravity="center"
+                            android:layout_weight=".4"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="20sp" />
+
+
+                        <TextView
+                            android:id="@+id/user_course_tv"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:gravity="start"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Branch"
+                            android:gravity="center"
+                            android:layout_weight=".4"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="20sp" />
+
+
+                        <TextView
+                            android:id="@+id/user_branch_tv"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:gravity="start"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Year"
+                            android:gravity="center"
+                            android:layout_weight=".4"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="20sp" />
+
+
+                        <TextView
+                            android:id="@+id/user_course_year_tv"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:gravity="start"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="About me"
+                            android:gravity="center"
+                            android:layout_weight=".4"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="20sp" />
+
+
+                        <TextView
+                            android:id="@+id/user_about_me_tv"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:gravity="start"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+
+                            android:padding="4dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/profile_edit_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_edit_icon" />
+
+    </RelativeLayout>
+
 
 </FrameLayout>
