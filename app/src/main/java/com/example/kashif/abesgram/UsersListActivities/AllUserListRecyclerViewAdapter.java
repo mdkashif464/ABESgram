@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.kashif.abesgram.ProfileActivities.MyProfileActivity;
 import com.example.kashif.abesgram.R;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by kashif on 29/10/17.
@@ -62,14 +64,14 @@ public class AllUserListRecyclerViewAdapter extends RecyclerView.Adapter<AllUser
 
     public class AllUserListViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView userProfileImageView;
+        private CircleImageView userProfileImageView;
         private TextView userNameTextView;
         public Button viewProfileButton;
 
         public AllUserListViewHolder(View itemView) {
             super(itemView);
 
-            userProfileImageView = (ImageView) itemView.findViewById(R.id.all_user_list_image_iv);
+            userProfileImageView = (CircleImageView) itemView.findViewById(R.id.all_user_list_image_iv);
             userNameTextView = (TextView) itemView.findViewById(R.id.all_user_list_name_tv);
             viewProfileButton = (Button) itemView.findViewById(R.id.all_user_list_view_profile_btn);
         }
@@ -79,7 +81,10 @@ public class AllUserListRecyclerViewAdapter extends RecyclerView.Adapter<AllUser
         }
 
         public void setPlayerProfileImage(String profileImageUrl) {
-            //Picasso.with(itemView.getContext()).load(profileImageUrl).into(userProfileImageView);
+            RequestOptions placeholderOption = new RequestOptions();
+            placeholderOption.placeholder(R.drawable.ic_person_black_24dp);
+
+            Glide.with(context).applyDefaultRequestOptions(placeholderOption).load(profileImageUrl).into(userProfileImageView);
 
         }
     }

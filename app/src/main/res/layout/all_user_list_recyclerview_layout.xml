@@ -16,11 +16,13 @@
             android:layout_gravity="center"
             android:layout_margin="10dp">
 
-            <ImageView
+
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/all_user_list_image_iv"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/myprofile_icon"/>
+                android:src="@drawable/ic_person_black_24dp"/>
+
 
         </LinearLayout>
 

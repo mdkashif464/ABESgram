@@ -27,11 +27,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ProfileActivities.MyProfileActivity" />
         <activity android:name=".ProfileActivities.ProfileEditActivity" />
-        <activity android:name=".UsersListActivities.AllUsersListActivity"></activity>
-
+        <activity android:name=".UsersListActivities.AllUsersListActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" ></activity>
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".CommentsActivityFiles.CommentsActivity">
+        </activity>
     </application>
 
 </manifest>

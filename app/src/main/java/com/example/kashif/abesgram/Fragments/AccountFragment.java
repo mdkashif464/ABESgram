@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.kashif.abesgram.ProfileActivities.ProfileEditActivity;
 import com.example.kashif.abesgram.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -110,7 +111,9 @@ public class AccountFragment extends Fragment {
                 }
                 else {
 
-                    Glide.with(getActivity()).load(userImageUri).into(user_profile_image_iv);
+                    RequestOptions placeholderOption = new RequestOptions();
+                    placeholderOption.placeholder(R.drawable.ic_person_black_24dp);
+                    Glide.with(getActivity()).applyDefaultRequestOptions(placeholderOption).load(userImageUri).into(user_profile_image_iv);
                     user_gender_age_tv.setText("Gender: " + userGender + " | Age: " + userAge);
                     user_course_tv.setText(userCourse);
                     user_branch_tv.setText(userCourseBranch);

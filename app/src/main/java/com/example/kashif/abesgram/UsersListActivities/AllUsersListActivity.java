@@ -73,7 +73,7 @@ public class AllUsersListActivity extends AppCompatActivity {
                 int i = 0;
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                     String user_name = childSnapshot.child("Name").getValue().toString();
-                    String user_image_Url = childSnapshot.child("ProfileImageUrl").getValue(String.class);
+                    String user_image_Url = childSnapshot.child("ProfileImage").getValue(String.class);
                     String user_uniqueId = childSnapshot.child("UniqueUserId").getValue().toString();
                     allUserListModelArrayList.add(i, new AllUserListModel(user_name, user_image_Url, user_uniqueId));
                     i++;

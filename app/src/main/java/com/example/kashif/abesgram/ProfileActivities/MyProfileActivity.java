@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.kashif.abesgram.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,11 +20,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyProfileActivity extends AppCompatActivity {
 
     private FloatingActionButton profile_edit_fab;
 
-    private ImageView user_profile_image_iv;
+    private CircleImageView user_profile_image_iv;
 
     private TextView username_tv;
     private TextView useremail_tv;
@@ -34,6 +37,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private TextView user_about_me_tv;
 
     private String userName;
+    private String userProfileUrl;
     private String userEmail;
     private String userGender;
     private String userAge;
@@ -54,13 +58,13 @@ public class MyProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
 
-        getSupportActionBar().setTitle("My Profile");
+        getSupportActionBar().setTitle("User Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // initializing views
         profile_edit_fab = (FloatingActionButton) findViewById(R.id.profile_edit_fab);
 
-        user_profile_image_iv = (ImageView) findViewById(R.id.user_profile_image_imagevieww);
+        user_profile_image_iv = (CircleImageView) findViewById(R.id.user_profile_image_imagevieww);
         username_tv = (TextView) findViewById(R.id.user_profile_name_tv);
         useremail_tv = (TextView) findViewById(R.id.user_profile_email_tv);
         user_gender_age_tv = (TextView) findViewById(R.id.user_gender_age_tv);
@@ -86,6 +90,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userName = dataSnapshot.child("Name").getValue(String.class);
+                userProfileUrl = dataSnapshot.child("ProfileImage").getValue(String.class);
                 userEmail = dataSnapshot.child("Email").getValue(String.class);
                 userGender = dataSnapshot.child("Gender").getValue(String.class);
                 userAge = dataSnapshot.child("Age").getValue(String.class);
@@ -100,6 +105,11 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
 
                 username_tv.setText(userName);
+
+                RequestOptions placeholderOption = new RequestOptions();
+                placeholderOption.placeholder(R.drawable.ic_person_black_24dp);
+                Glide.with(MyProfileActivity.this).applyDefaultRequestOptions(placeholderOption).load(userProfileUrl).into(user_profile_image_iv);
+
                 user_gender_age_tv.setText("Gender: "+userGender+" | Age: "+userAge);
                 user_course_tv.setText(userCourse);
                 user_branch_tv.setText(userCourseBranch);
