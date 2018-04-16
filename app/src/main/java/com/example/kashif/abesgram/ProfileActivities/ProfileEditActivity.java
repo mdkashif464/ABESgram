@@ -1,6 +1,7 @@
 package com.example.kashif.abesgram.ProfileActivities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -62,6 +63,8 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private Button saveCredentials_btn;
 
+    private ProgressDialog progressDialog;
+
     private Uri mainImageURI = null;
     private Uri download_uri;
     private Bitmap compressedImageFile;
@@ -78,6 +81,11 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Profile Edit");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        progressDialog = new ProgressDialog(ProfileEditActivity.this);
+        progressDialog.setMessage("uploading..");
+        progressDialog.setCancelable(false);
 
 
         userProfile_iV = (CircleImageView) findViewById(R.id.user_profile_image_imageview);
@@ -212,6 +220,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         user_edit_profile_details.put("CourseYear", userCourseYear);
         user_edit_profile_details.put("AboutMe", userAboutMe);
 
+        progressDialog.show();
+
 
         // uploading user profile image
         if (mainImageURI != null){
@@ -270,6 +280,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         profileEditDatabaseReference = FirebaseDatabase.getInstance().getReference().child("allUserDetails").child(userUniqueUID);
         profileEditDatabaseReference.updateChildren(user_edit_profile_details);
+        progressDialog.cancel();
         finish();
     }
 

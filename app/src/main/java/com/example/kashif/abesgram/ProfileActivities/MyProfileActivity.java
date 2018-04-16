@@ -80,7 +80,7 @@ public class MyProfileActivity extends AppCompatActivity {
         receivedUserUniqueID = intent.getExtras().getString("UserUniqueID");
 
         if (receivedUserUniqueID.equals(currentUserUniqueID)){
-                profile_edit_fab.setVisibility(View.VISIBLE);
+               // profile_edit_fab.setVisibility(View.VISIBLE);
             }
 
         profileDatabaseReference = FirebaseDatabase.getInstance().getReference().child("allUserDetails").child(receivedUserUniqueID);
@@ -101,7 +101,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
                 useremail_tv.setText(userEmail);
                 if (userName == null){
-                    goToProfileEditActivity();
+                  //  goToProfileEditActivity();
                 }
 
                 username_tv.setText(userName);

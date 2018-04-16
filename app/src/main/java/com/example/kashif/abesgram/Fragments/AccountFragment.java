@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -58,6 +59,7 @@ public class AccountFragment extends Fragment {
     private DatabaseReference profileDatabaseReference;
 
     private FirebaseUser currentUser;
+    private boolean isFirstTimeOpen = true;
 
 
     public AccountFragment() {
@@ -106,7 +108,9 @@ public class AccountFragment extends Fragment {
 
                 username_tv.setText(userName);
                 useremail_tv.setText(userEmail);
-                if (userAge == null){
+                if (userAge == null && isFirstTimeOpen) {
+                    Toast.makeText(getActivity(), "Please update your profile", Toast.LENGTH_SHORT).show();
+                    isFirstTimeOpen = false;
                     goToProfileEditActivity();
                 }
                 else {

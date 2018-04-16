@@ -23,6 +23,7 @@ import com.example.kashif.abesgram.Fragments.AccountFragment;
 import com.example.kashif.abesgram.Fragments.AddNewPostFragment;
 import com.example.kashif.abesgram.Fragments.HomeFragment;
 import com.example.kashif.abesgram.LoginActivities.LoginActivity;
+import com.example.kashif.abesgram.MyPostsActivityFiles.MyPostsActivity;
 import com.example.kashif.abesgram.UsersListActivities.AllUsersListActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity
     private AddNewPostFragment addNewPostFragment;
     private AccountFragment accountFragment;
     private Fragment currentFragment;
+
+    public static boolean addedNewPost = false;
 
     private DatabaseReference databaseReference;
 
@@ -169,6 +172,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
 
+            case R.id.nav_myposts : {
+                Intent intent = new Intent(MainActivity.this, MyPostsActivity.class);
+                startActivity(intent);
+                break;
+            }
+
             case R.id.nav_add_new_post : {
                 replaceFragment(addNewPostFragment, currentFragment);
                 mainbottomNav.setSelectedItemId(R.id.bottom_action_add_new_post);
@@ -230,12 +239,13 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.add(R.id.main_container, homeFragment);
+        /*fragmentTransaction.add(R.id.main_container, homeFragment);
         fragmentTransaction.add(R.id.main_container, addNewPostFragment);
         fragmentTransaction.add(R.id.main_container, accountFragment);
 
         fragmentTransaction.hide(addNewPostFragment);
-        fragmentTransaction.hide(accountFragment);
+        fragmentTransaction.hide(accountFragment);*/
+        fragmentTransaction.replace(R.id.main_container, homeFragment);
 
         fragmentTransaction.commit();
 
@@ -247,24 +257,34 @@ public class MainActivity extends AppCompatActivity
         if(fragment == homeFragment){
 
             changeActionBarTitle("Home");
-            fragmentTransaction.hide(accountFragment);
-            fragmentTransaction.hide(addNewPostFragment);
+            /*fragmentTransaction.hide(accountFragment);
+            fragmentTransaction.hide(addNewPostFragment);*/
+            if (addedNewPost) {
+                homeFragment = new HomeFragment();
+                fragmentTransaction.replace(R.id.main_container, homeFragment);
+                addedNewPost = false;
+            }
+            else{
+                fragmentTransaction.replace(R.id.main_container, fragment);
+            }
 
         }
 
         if(fragment == accountFragment){
 
             changeActionBarTitle("My Profile");
-            fragmentTransaction.hide(homeFragment);
-            fragmentTransaction.hide(addNewPostFragment);
+            /*fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(addNewPostFragment);*/
+            fragmentTransaction.replace(R.id.main_container, fragment);
 
         }
 
         if(fragment == addNewPostFragment){
 
             changeActionBarTitle("Add New Post");
-            fragmentTransaction.hide(homeFragment);
-            fragmentTransaction.hide(accountFragment);
+            /*fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(accountFragment);*/
+            fragmentTransaction.replace(R.id.main_container, fragment);
 
         }
         fragmentTransaction.show(fragment);

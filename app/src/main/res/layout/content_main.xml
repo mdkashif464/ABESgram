@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_menu"
         android:layout_alignParentBottom="true"
-        android:background="#f7b3ad"/>
+        android:background="#f4e4e4" />
 
     <FrameLayout
         android:id="@+id/main_container"

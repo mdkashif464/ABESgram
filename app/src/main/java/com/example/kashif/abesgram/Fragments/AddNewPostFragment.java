@@ -1,6 +1,7 @@
 package com.example.kashif.abesgram.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.kashif.abesgram.MainActivity;
 import com.example.kashif.abesgram.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,8 +56,6 @@ public class AddNewPostFragment extends Fragment {
 
     private Uri postImageUri = null;
 
-    private ProgressBar newPostProgress;
-
     private StorageReference storageReference;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
@@ -64,6 +63,8 @@ public class AddNewPostFragment extends Fragment {
     private String current_user_id;
 
     private Bitmap compressedImageFile;
+
+    private ProgressDialog progressDialog;
 
 
 
@@ -88,7 +89,10 @@ public class AddNewPostFragment extends Fragment {
         newPostImage = view.findViewById(R.id.new_post_image);
         newPostDesc = view.findViewById(R.id.new_post_desc);
         newPostBtn = view.findViewById(R.id.post_btn);
-        newPostProgress = view.findViewById(R.id.new_post_progress);
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("uploading..");
+        progressDialog.setCancelable(false);
 
 
 
@@ -113,7 +117,7 @@ public class AddNewPostFragment extends Fragment {
 
                 if(!TextUtils.isEmpty(desc) && postImageUri != null){
 
-                    newPostProgress.setVisibility(View.VISIBLE);
+                    progressDialog.show();
 
                     final String randomName = UUID.randomUUID().toString();
 
@@ -174,7 +178,7 @@ public class AddNewPostFragment extends Fragment {
 
                                         String downloadthumbUri = taskSnapshot.getDownloadUrl().toString();
 
-                                        Map<String, Object> postMap = new HashMap<>();
+                                        final Map<String, Object> postMap = new HashMap<>();
                                         postMap.put("image_url", downloadUri);
                                         postMap.put("image_thumb", downloadthumbUri);
                                         postMap.put("desc", desc);
@@ -187,16 +191,24 @@ public class AddNewPostFragment extends Fragment {
 
                                                 if(task.isSuccessful()){
 
-                                                    Toast.makeText(getActivity(), "Post was added", Toast.LENGTH_LONG).show();
-                                                    newPostImage.setImageResource(R.drawable.post_placeholder);
-                                                    newPostDesc.setText("");
+                                                    firebaseFirestore.collection("EachUserPosts/"+current_user_id+"/MyPosts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                            if (task.isSuccessful()){
+                                                                Toast.makeText(getActivity(), "Post was added", Toast.LENGTH_SHORT).show();
+                                                                newPostImage.setImageResource(R.drawable.post_placeholder);
+                                                                newPostDesc.setText("");
+                                                                MainActivity.addedNewPost = true;
+                                                            }
+                                                        }
+                                                    });
 
                                                 } else {
 
 
                                                 }
 
-                                                newPostProgress.setVisibility(View.INVISIBLE);
+                                                progressDialog.cancel();
 
                                             }
                                         });
@@ -214,7 +226,7 @@ public class AddNewPostFragment extends Fragment {
 
                             } else {
 
-                                newPostProgress.setVisibility(View.INVISIBLE);
+                                progressDialog.cancel();
 
                             }
 
@@ -224,6 +236,7 @@ public class AddNewPostFragment extends Fragment {
 
                 }
                 else {
+
                     Toast.makeText(getActivity(), "Any of the two field is Empty", Toast.LENGTH_LONG).show();
                 }
 
