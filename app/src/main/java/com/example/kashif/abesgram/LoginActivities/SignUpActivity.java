@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,7 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements View.OnTouchListener {
 
     private EditText signUp_name_editText;
     private EditText signUp_email_editText;
@@ -61,6 +63,9 @@ public class SignUpActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        //hiding the keyboard on screen touch
+        findViewById(R.id.main_layout).setOnTouchListener(this);
+
 
         signUp_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +99,10 @@ public class SignUpActivity extends AppCompatActivity {
             signUp_password_editText.setError("should be atleast 6 digits");
             return;
         }
+        /*else if(!userEmail.endsWith("@abes.ac.in")){
+            signUp_email_editText.setError("Only ABESEC accounts are allowed");
+            return;
+        }*/
 
         signUpProgressDialog = new ProgressDialog(this);
         signUpProgressDialog.setMessage("Registering user...");
@@ -109,22 +118,34 @@ public class SignUpActivity extends AppCompatActivity {
                     currentUser = firebaseAuth.getCurrentUser();
                     final String currentUserId = currentUser.getUid();
 
-                    databaseReference.child("allUserDetails").child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    currentUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            databaseReference.child("allUserDetails").child(currentUserId).child("UniqueUserId").setValue(currentUserId);
-                            databaseReference.child("allUserDetails").child(currentUserId).child("Name").setValue(userName);
-                            databaseReference.child("allUserDetails").child(currentUserId).child("Email").setValue(userEmail);
-                        }
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            if (task.isSuccessful()) {
+                                databaseReference.child("allUserDetails").child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        databaseReference.child("allUserDetails").child(currentUserId).child("UniqueUserId").setValue(currentUserId);
+                                        databaseReference.child("allUserDetails").child(currentUserId).child("Name").setValue(userName);
+                                        databaseReference.child("allUserDetails").child(currentUserId).child("Email").setValue(userEmail);
+
+                                        //Toast.makeText(SignUpActivity.this, "Database.",Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
 
                         }
                     });
 
+
                     signUpProgressDialog.cancel();
-                    Toast.makeText(SignUpActivity.this, "Successfully Registered", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Successfully Registered", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 else{
@@ -150,5 +171,14 @@ public class SignUpActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 }

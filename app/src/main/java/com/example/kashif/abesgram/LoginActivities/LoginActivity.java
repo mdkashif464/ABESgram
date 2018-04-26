@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,7 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnTouchListener {
 
     private EditText signIn_email_editText;
     private EditText signIn_password_editText;
@@ -58,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // hiding the keyboard on screen touch
+        findViewById(R.id.main_layout).setOnTouchListener(this);
+
 
         signIn_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +86,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null){
-            gotoWelcomeActivity();
+        if (currentUser != null) {
+            if (currentUser.isEmailVerified()) {
+                gotoWelcomeActivity();
+            }
+            else{
+                Toast.makeText(LoginActivity.this, "Please verify your email and then SignIn", Toast.LENGTH_LONG).show();
+                signOutIfUserNotVerified();
+            }
         }
     }
 
@@ -104,6 +115,11 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        /*else if(!userEmail.endsWith("@abes.ac.in")){
+            signIn_email_editText.setError("Only ABESEC accounts are allowed");
+            return;
+        }*/
+
         logInProgressDialog.show();
 
         firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -111,9 +127,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()){
+                    currentUser = firebaseAuth.getCurrentUser();
                     logInProgressDialog.cancel();
-                    Toast.makeText(LoginActivity.this, "Successfully SignedIn", Toast.LENGTH_LONG).show();
-                    gotoWelcomeActivity();
+                    if (currentUser.isEmailVerified()) {
+                        Toast.makeText(LoginActivity.this, "Successfully SignedIn", Toast.LENGTH_LONG).show();
+                        gotoWelcomeActivity();
+                    }
+                    else {
+                        Toast.makeText(LoginActivity.this, "Verify your email before Signing In", Toast.LENGTH_LONG).show();
+                        signOutIfUserNotVerified();
+                    }
                 }
                 else {
                     logInProgressDialog.cancel();
@@ -127,5 +150,16 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void signOutIfUserNotVerified(){
+        firebaseAuth.signOut();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 }
