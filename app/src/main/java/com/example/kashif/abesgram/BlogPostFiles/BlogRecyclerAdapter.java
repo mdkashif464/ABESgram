@@ -79,6 +79,13 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         final String blogPostId = blog_list.get(position).BlogPostId;
         final String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
+
+            long millisecond = blog_list.get(position).getTimestamp().getTime();
+            String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+            holder.setTime(dateString);
+
+
+
         String desc_data = blog_list.get(position).getDesc();
         holder.setDescText(desc_data);
 
@@ -104,13 +111,6 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             }
         });
 
-        try {
-            long millisecond = blog_list.get(position).getTimestamp().getTime();
-            String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
-            holder.setTime(dateString);
-        } catch (Exception e) {
-
-        }
 
 
 

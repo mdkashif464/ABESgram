@@ -36,6 +36,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -183,7 +185,11 @@ public class AddNewPostFragment extends Fragment {
                                         postMap.put("image_thumb", downloadthumbUri);
                                         postMap.put("desc", desc);
                                         postMap.put("user_id", current_user_id);
-                                        postMap.put("timestamp", FieldValue.serverTimestamp());
+
+                                        long time = (System.currentTimeMillis());
+                                        Timestamp tsTemp = new Timestamp(time);
+
+                                        postMap.put("timestamp", tsTemp);
 
                                         firebaseFirestore.collection("Posts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                             @Override

@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
-                        android:text="User Gender | Age here"
+                        android:text="Gender | Age"
                         android:textColor="#FFE9DFDF"
                         android:textSize="18sp"  />
 

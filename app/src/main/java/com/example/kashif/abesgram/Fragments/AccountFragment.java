@@ -118,7 +118,9 @@ public class AccountFragment extends Fragment {
                     RequestOptions placeholderOption = new RequestOptions();
                     placeholderOption.placeholder(R.drawable.ic_person_black_24dp);
                     Glide.with(getActivity()).applyDefaultRequestOptions(placeholderOption).load(userImageUri).into(user_profile_image_iv);
-                    user_gender_age_tv.setText("Gender: " + userGender + " | Age: " + userAge);
+                    if (userAge!=null) {
+                        user_gender_age_tv.setText("Gender: " + userGender + " | Age: " + userAge);
+                    }
                     user_course_tv.setText(userCourse);
                     user_branch_tv.setText(userCourseBranch);
                     user_course_year_tv.setText(userCourseYear);

@@ -239,13 +239,13 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        /*fragmentTransaction.add(R.id.main_container, homeFragment);
+        fragmentTransaction.add(R.id.main_container, homeFragment);
         fragmentTransaction.add(R.id.main_container, addNewPostFragment);
         fragmentTransaction.add(R.id.main_container, accountFragment);
 
         fragmentTransaction.hide(addNewPostFragment);
-        fragmentTransaction.hide(accountFragment);*/
-        fragmentTransaction.replace(R.id.main_container, homeFragment);
+        fragmentTransaction.hide(accountFragment);
+        //fragmentTransaction.replace(R.id.main_container, homeFragment);
 
         fragmentTransaction.commit();
 
@@ -257,34 +257,44 @@ public class MainActivity extends AppCompatActivity
         if(fragment == homeFragment){
 
             changeActionBarTitle("Home");
-            /*fragmentTransaction.hide(accountFragment);
-            fragmentTransaction.hide(addNewPostFragment);*/
-            if (addedNewPost) {
+
+            /*if (addedNewPost) {
                 homeFragment = new HomeFragment();
                 fragmentTransaction.replace(R.id.main_container, homeFragment);
                 addedNewPost = false;
             }
             else{
                 fragmentTransaction.replace(R.id.main_container, fragment);
+            }*/
+
+            if (addedNewPost) {
+                fragmentTransaction.remove(homeFragment);
+                homeFragment = new HomeFragment();
+                fragmentTransaction.add(R.id.main_container,homeFragment);
+                addedNewPost = false;
             }
+
+                fragmentTransaction.hide(accountFragment);
+                fragmentTransaction.hide(addNewPostFragment);
+
 
         }
 
         if(fragment == accountFragment){
 
             changeActionBarTitle("My Profile");
-            /*fragmentTransaction.hide(homeFragment);
-            fragmentTransaction.hide(addNewPostFragment);*/
-            fragmentTransaction.replace(R.id.main_container, fragment);
+            fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(addNewPostFragment);
+            //fragmentTransaction.replace(R.id.main_container, fragment);
 
         }
 
         if(fragment == addNewPostFragment){
 
             changeActionBarTitle("Add New Post");
-            /*fragmentTransaction.hide(homeFragment);
-            fragmentTransaction.hide(accountFragment);*/
-            fragmentTransaction.replace(R.id.main_container, fragment);
+            fragmentTransaction.hide(homeFragment);
+            fragmentTransaction.hide(accountFragment);
+            //fragmentTransaction.replace(R.id.main_container, fragment);
 
         }
         fragmentTransaction.show(fragment);
