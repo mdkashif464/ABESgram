@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnTouchList
     private EditText signIn_password_editText;
 
     private Button signIn_button;
+    private Button forgot_password_button;
     private Button signUp_button;
 
     private String userEmail;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnTouchList
         signIn_password_editText = (EditText) this.findViewById(R.id.et_login_password);
         signIn_button = (Button) this.findViewById(R.id.btn_signin);
         signUp_button = (Button) this.findViewById(R.id.btn_signup_at_login_page);
+        forgot_password_button = (Button) this.findViewById(R.id.btn_forgot_password);
 
         logInProgressDialog = new ProgressDialog(this);
         logInProgressDialog.setMessage("Signing In...");
@@ -68,6 +70,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnTouchList
             @Override
             public void onClick(View v) {
                 signInUser();
+            }
+        });
+
+        forgot_password_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sentResetPasswordEmail();
             }
         });
 
@@ -154,6 +163,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnTouchList
 
     public void signOutIfUserNotVerified(){
         firebaseAuth.signOut();
+    }
+
+    public void sentResetPasswordEmail(){
+        userEmail = signIn_email_editText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(userEmail)){
+            signIn_email_editText.setError("Enter your email to reset password");
+            return;
+        }
+
+        firebaseAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Password Reset Email sent", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     @Override
