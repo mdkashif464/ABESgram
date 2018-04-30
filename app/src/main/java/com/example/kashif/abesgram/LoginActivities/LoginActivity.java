@@ -179,6 +179,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnTouchList
                 if (task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "Password Reset Email sent", Toast.LENGTH_LONG).show();
                 }
+                else{
+                    Toast.makeText(LoginActivity.this, "Seems you are not registered", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

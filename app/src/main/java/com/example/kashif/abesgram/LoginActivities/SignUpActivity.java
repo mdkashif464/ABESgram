@@ -130,7 +130,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnTouchLis
                                         databaseReference.child("allUserDetails").child(currentUserId).child("Name").setValue(userName);
                                         databaseReference.child("allUserDetails").child(currentUserId).child("Email").setValue(userEmail);
 
-                                        //Toast.makeText(SignUpActivity.this, "Database.",Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override

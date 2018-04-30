@@ -144,12 +144,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             logoutMethod();
             return true;
@@ -245,7 +241,6 @@ public class MainActivity extends AppCompatActivity
 
         fragmentTransaction.hide(addNewPostFragment);
         fragmentTransaction.hide(accountFragment);
-        //fragmentTransaction.replace(R.id.main_container, homeFragment);
 
         fragmentTransaction.commit();
 
@@ -257,15 +252,6 @@ public class MainActivity extends AppCompatActivity
         if(fragment == homeFragment){
 
             changeActionBarTitle("Home");
-
-            /*if (addedNewPost) {
-                homeFragment = new HomeFragment();
-                fragmentTransaction.replace(R.id.main_container, homeFragment);
-                addedNewPost = false;
-            }
-            else{
-                fragmentTransaction.replace(R.id.main_container, fragment);
-            }*/
 
             if (addedNewPost) {
                 fragmentTransaction.remove(homeFragment);
@@ -285,7 +271,6 @@ public class MainActivity extends AppCompatActivity
             changeActionBarTitle("My Profile");
             fragmentTransaction.hide(homeFragment);
             fragmentTransaction.hide(addNewPostFragment);
-            //fragmentTransaction.replace(R.id.main_container, fragment);
 
         }
 
@@ -294,12 +279,9 @@ public class MainActivity extends AppCompatActivity
             changeActionBarTitle("Add New Post");
             fragmentTransaction.hide(homeFragment);
             fragmentTransaction.hide(accountFragment);
-            //fragmentTransaction.replace(R.id.main_container, fragment);
 
         }
         fragmentTransaction.show(fragment);
-
-        //fragmentTransaction.replace(R.id.main_container, fragment);
         fragmentTransaction.commit();
 
     }

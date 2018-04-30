@@ -49,7 +49,6 @@ public class AllUserListRecyclerViewAdapter extends RecyclerView.Adapter<AllUser
         holder.viewProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context, "will be applied later", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context, MyProfileActivity.class)
                         .putExtra("UserUniqueID", allUserListModelArrayList.get(position).getUserUniqueId());
                 context.startActivity(intent);

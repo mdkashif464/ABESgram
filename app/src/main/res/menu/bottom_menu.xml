@@ -12,6 +12,6 @@
         android:title="@string/bottom_add_new_post_text" />
     <item
         android:id="@+id/bottom_action_account"
-        android:icon="@drawable/ic_person_black_24dp"
+        android:icon="@drawable/my_profile_icon"
         android:title="@string/bottom_ac_text" />
 </menu>

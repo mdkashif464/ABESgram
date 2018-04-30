@@ -27,7 +27,7 @@
                     android:id="@+id/user_profile_image_imagevieww"
                     android:layout_width="125dp"
                     android:layout_height="125dp"
-                    android:src="@drawable/myprofile_icon"
+                    android:src="@drawable/ic_person_black_24dp"
                     android:layout_gravity="center"/>
 
                 <TextView

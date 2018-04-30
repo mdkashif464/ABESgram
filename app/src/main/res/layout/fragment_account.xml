@@ -34,15 +34,9 @@
                         android:id="@+id/user_profile_image_imageview"
                         android:layout_width="125dp"
                         android:layout_height="125dp"
-                        android:src="@drawable/myprofile_icon"
+                        android:src="@drawable/ic_person_black_24dp"
                         android:layout_gravity="center"/>
 
-                    <!--<ImageView
-                        android:id="@+id/user_profile_image_imageview"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/myprofile_icon"/>-->
 
                     <TextView
                         android:id="@+id/user_profile_name_tv"

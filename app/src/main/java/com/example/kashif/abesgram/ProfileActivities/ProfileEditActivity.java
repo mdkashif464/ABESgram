@@ -146,8 +146,6 @@ public class ProfileEditActivity extends AppCompatActivity {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 
                     if(ContextCompat.checkSelfPermission(ProfileEditActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-
-                        Toast.makeText(ProfileEditActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
                         ActivityCompat.requestPermissions(ProfileEditActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
                     } else {
