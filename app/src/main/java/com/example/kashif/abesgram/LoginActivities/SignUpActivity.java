@@ -99,10 +99,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnTouchLis
             signUp_password_editText.setError("should be atleast 6 digits");
             return;
         }
-        /*else if(!userEmail.endsWith("@abes.ac.in")){
+        else if(!userEmail.endsWith("@abes.ac.in")){
             signUp_email_editText.setError("Only ABESEC accounts are allowed");
             return;
-        }*/
+        }
 
         signUpProgressDialog = new ProgressDialog(this);
         signUpProgressDialog.setMessage("Registering user...");

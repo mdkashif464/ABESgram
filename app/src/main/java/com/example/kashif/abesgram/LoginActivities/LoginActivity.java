@@ -124,10 +124,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnTouchList
             return;
         }
 
-        /*else if(!userEmail.endsWith("@abes.ac.in")){
+        else if(!userEmail.endsWith("@abes.ac.in")){
             signIn_email_editText.setError("Only ABESEC accounts are allowed");
             return;
-        }*/
+        }
 
         logInProgressDialog.show();
 
